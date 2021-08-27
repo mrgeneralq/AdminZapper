@@ -1,0 +1,6 @@
+name: AdminZapper
+version: 1.0
+main: com.pseudonova.adminzapper.AdminZapper
+api-version: 1.13
+commands:
+  az:

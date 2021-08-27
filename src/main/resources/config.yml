@@ -1,0 +1,3 @@
+sound:
+  enabled: true
+  teleport-sound: 'ENTITY_ENDERMAN_TELEPORT'
