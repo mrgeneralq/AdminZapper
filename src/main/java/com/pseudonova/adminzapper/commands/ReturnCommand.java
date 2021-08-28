@@ -14,7 +14,7 @@ public class ReturnCommand extends AbstractCommand {
     private final ITeleportService teleportService;
 
     public ReturnCommand(ITeleportService teleportService) {
-        super("return","adminzapper.return", true, "/az return <player>");
+        super("return","adminzapper.return", false, "/az return <player>");
         this.teleportService = teleportService;
     }
 

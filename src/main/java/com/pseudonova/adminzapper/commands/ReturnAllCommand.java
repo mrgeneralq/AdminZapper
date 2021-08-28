@@ -15,21 +15,20 @@ public class ReturnAllCommand extends AbstractCommand {
     private final ITeleportService teleportService;
 
     public ReturnAllCommand(ITeleportService teleportService) {
-        super("returnall","adminzapper.returnall", true, "/az returnall");
+        super("returnall","adminzapper.returnall", false, "/az returnall");
         this.teleportService = teleportService;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 
-        Player player = (Player) sender;
 
         Bukkit.getOnlinePlayers().forEach(target ->{
-            teleportService.teleportPlayerToLastLocation(player);
+            teleportService.teleportPlayerToLastLocation(target);
             target.sendMessage(ChatColor.GOLD + "A staffmember returned you to ur previous location");
         });
 
-        player.sendMessage(String.format("Teleported %s all players to you"));
+        sender.sendMessage(String.format("Teleported %s all players to you"));
         return true;
     }
 }

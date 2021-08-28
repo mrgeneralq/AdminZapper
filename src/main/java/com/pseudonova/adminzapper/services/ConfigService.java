@@ -40,4 +40,29 @@ public class ConfigService implements IConfigService {
         this.plugin.reloadConfig();;
     }
 
+    @Override
+    public String getPrefix() {
+        return this.plugin.getConfig().getString("messages.prefix");
+    }
+
+    @Override
+    public String getConfigReloadedMessage() {
+        return this.plugin.getConfig().getString("messages.config-reloaded");
+    }
+
+    @Override
+    public String getNoPermissionMessage() {
+        return this.plugin.getConfig().getString("messages.no-permission");
+    }
+
+    @Override
+    public String getOnlyPlayersMessage() {
+        return this.plugin.getConfig().getString("messages.only-players");
+    }
+
+    @Override
+    public String getCmdNotExistMessage() {
+        return this.plugin.getConfig().getString("messages.cmd-not-exist");
+    }
+
 }

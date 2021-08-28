@@ -1,14 +1,8 @@
 package com.pseudonova.adminzapper.statics;
 
-import com.pseudonova.adminzapper.interfaces.IConfigService;
-import com.pseudonova.adminzapper.interfaces.ILocationHistoryService;
-import com.pseudonova.adminzapper.interfaces.ISoundService;
-import com.pseudonova.adminzapper.interfaces.ITeleportService;
+import com.pseudonova.adminzapper.interfaces.*;
 import com.pseudonova.adminzapper.repositories.LocationHistoryRepository;
-import com.pseudonova.adminzapper.services.ConfigService;
-import com.pseudonova.adminzapper.services.LocationHistoryService;
-import com.pseudonova.adminzapper.services.SoundService;
-import com.pseudonova.adminzapper.services.TeleportService;
+import com.pseudonova.adminzapper.services.*;
 import org.bukkit.plugin.Plugin;
 
 public class Bootstrapper {
@@ -19,6 +13,7 @@ public class Bootstrapper {
     private  IConfigService configService;
     private  ISoundService soundService;
     private  ITeleportService teleportService;
+    private IMessageService messageService;
 
     private Bootstrapper(){}
 
@@ -33,12 +28,12 @@ public class Bootstrapper {
         this.registerServices();
     }
 
-
     private void registerServices(){
 
         this.locationHistoryService = new LocationHistoryService(new LocationHistoryRepository());
         this.configService = new ConfigService(this.plugin);
-        this.soundService = new SoundService(configService);
+        this.messageService = new MessageService(this.configService);
+        this.soundService = new SoundService(this.configService);
         this.teleportService = new TeleportService(this.locationHistoryService,this.configService, this.soundService);
     }
 
@@ -57,4 +52,9 @@ public class Bootstrapper {
     public ITeleportService getTeleportService() {
         return teleportService;
     }
+
+    public IMessageService getMessageService() {
+        return messageService;
+    }
 }
+

@@ -8,4 +8,13 @@ public interface IConfigService {
     boolean playSoundEnabled();
     void reloadConfig();
 
+    String getPrefix();
+
+
+
+    //messages
+    String getConfigReloadedMessage();
+    String getNoPermissionMessage();
+    String getOnlyPlayersMessage();
+    String getCmdNotExistMessage();
 }

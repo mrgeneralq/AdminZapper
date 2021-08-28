@@ -1,7 +1,5 @@
 package com.pseudonova.adminzapper.commands;
-import com.pseudonova.adminzapper.interfaces.ICommand;
-import com.pseudonova.adminzapper.interfaces.ILocationHistoryService;
-import com.pseudonova.adminzapper.interfaces.ITeleportService;
+import com.pseudonova.adminzapper.interfaces.*;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -15,18 +13,24 @@ import java.util.Map;
 public class AdminZapperCommand implements CommandExecutor {
 
     private final ITeleportService teleportService;
+    private final IConfigService configService;
+    private final IMessageService messageService;
+
 
     private final Map<String, ICommand> subCommands = new HashMap<>();
 
 
-    public AdminZapperCommand(ITeleportService teleportService) {
+    public AdminZapperCommand(ITeleportService teleportService, IConfigService configService, IMessageService messageService) {
         this.teleportService = teleportService;
+        this.configService = configService;
+        this.messageService = messageService;
 
         subCommands.put("goto", new GotoCommand(this.teleportService));
         subCommands.put("bring", new BringCommand(this.teleportService));
         subCommands.put("bringall", new BringAllCommand(this.teleportService));
         subCommands.put("return", new ReturnCommand(this.teleportService));
         subCommands.put("returnall", new ReturnAllCommand(this.teleportService));
+        subCommands.put("reload", new ReloadCommand(this.configService, this.messageService));
         //TODO move command, moveall command, reload command
 
     }
@@ -35,7 +39,7 @@ public class AdminZapperCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 
         if(!sender.hasPermission("adminzapper")){
-            sender.sendMessage(ChatColor.RED + "You don't have permission");
+            messageService.sendNoPermissionMessage(sender);
             return true;
         }
 
@@ -47,19 +51,19 @@ public class AdminZapperCommand implements CommandExecutor {
         String cmdName = args[0].toLowerCase();
 
         if(!subCommands.containsKey(cmdName)){
-            sender.sendMessage(ChatColor.RED + "This command does not exist!");
+            messageService.sendCmdNotExistMessage(sender);
             return true;
         }
 
         ICommand subCmd = this.subCommands.get(cmdName);
 
         if(!sender.hasPermission(subCmd.getPermission())){
-            sender.sendMessage(ChatColor.RED + "You don't have permission to that command!");
+            this.messageService.sendNoPermissionMessage(sender);
             return true;
         }
 
         if(subCmd.isPlayersOnly() && !(sender instanceof Player)){
-            sender.sendMessage("This command can only be executed by players!");
+            messageService.sendOnlyPlayersMessage(sender);
             return true;
         }
 
